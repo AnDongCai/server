@@ -1,0 +1,52 @@
+<% include header%>
+<div class="container">
+    <form class="form create">
+        <div>
+            <label>用户名：</label>
+            <input type="text" name="name"
+             placeholder="用户名">
+        </div>
+        <div>
+            <label>密码：</label>
+            <input type="password" name="password">
+        </div>
+        <div>
+            <label>重复密码：</label>
+            <input type="password" name="repeatpass"
+                class="repexatpass">
+        </div>
+        <div class="submit">注册</div>
+    </form>
+</div>
+<script>
+    // ajax 提交表单  前端　way
+    $('.submit').click(() => {
+        // $.getJSON
+        // 没有做表单校验,  重后端
+        // 表单校验在前端，后端都要做
+        $.ajax({
+            url: '/signup',
+            type: 'POST',
+            dataType: 'json',
+            // 序列化 反序列化
+            data: $('.form').serialize(),
+            success: function (msg) {
+                console.log(msg);
+                if (msg.data === 3) {
+                    alert('注册成功');
+                    setTimeout(() => {
+                        window.location.href="/sign"
+                    },1000)
+                } else if (msg.data === 2) {
+                    alert('密码与重复密码不一致');
+                } else if (msg.data === 1) {
+                    alert('用户名已存在!');
+                }
+            },
+            error: function () {
+                alert('异常');
+            } 
+        })
+    })
+</script>
+<% include footer%>
